@@ -1,48 +1,16 @@
-"use client";
+// "use client";
 
 import Image from "next/image";
 import Todo from "./components/Todo";
-import { FormEvent, useEffect, useState } from "react";
+import { fetchTodos } from "./libs/actions";
+import AddForm from "./components/AddForm";
+import { TodoFactory } from "./libs/factories/TodoFactory";
+import TodoListFooter from "./components/TodoListFooter";
 
-export default function Home() {
-  const [newTodo, setNewTodo] = useState("");
-  const [tasks, setTasks] = useState<
-    { order: number; title: string; isCompleted: boolean }[]
-  >([]);
+export default async function Home() {
+  const tasks = await fetchTodos();
+  const todos = tasks?.map((item) => new TodoFactory(item, "APIv1"));
 
-  useEffect(() => {
-    fetch("/data/data.json")
-      .then((res) => res.json())
-      .then((data) => setTasks(data.data))
-      .catch((error) => console.log(error));
-  }, []);
-
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    tasks.push({
-      order: tasks.length,
-      title: newTodo,
-      isCompleted: false,
-    });
-
-    fetch("/data/data.json", {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify([
-        ...tasks,
-        {
-          order: tasks.length,
-          title: newTodo,
-          isCompleted: false,
-        },
-      ]),
-    })
-      .then((res) => console.log(res))
-      .catch((error) => console.log(error));
-  };
   return (
     <div className="relative min-h-[100vh] p-6 z-0">
       <Image
@@ -63,22 +31,16 @@ export default function Home() {
       <div className="max-w-[540px] mx-auto">
         <header>
           <h1 className=" text-2xl text-white mt-6">TO DO</h1>
-          <form action="" onSubmit={handleSubmit}>
-            <input
-              type="text"
-              className=" mt-9 h-12 rounded-md w-full bg-slate-800 text-white z-10"
-              value={newTodo}
-              onChange={(e) => setNewTodo(e.target.value)}
-            />
-          </form>
+          <AddForm />
         </header>
 
         <main className="mt-4 md:mt-6">
           <ul className=" shadow-2xl shadow-slate-500">
-            {tasks.map((item, index) => {
+            {todos?.map((item, index) => {
               return (
                 <li key={"todo" + index}>
                   <Todo
+                    id={item.id}
                     text={item.title}
                     isCompleted={item.isCompleted}
                     index={index}
@@ -87,27 +49,7 @@ export default function Home() {
               );
             })}
             <li>
-              <ul className="flex justify-between text-white bg-slate-800 px-5 py-4">
-                <li>
-                  <p>5 items left</p>
-                </li>
-                <li>
-                  <ul className="flex gap-4">
-                    <li>
-                      <a>All</a>
-                    </li>
-                    <li>
-                      <a>Active</a>
-                    </li>
-                    <li>
-                      <a>Completed</a>
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <button>Clear Completed</button>
-                </li>
-              </ul>
+              <TodoListFooter tasks={todos} />
             </li>
           </ul>
         </main>
