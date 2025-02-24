@@ -1,9 +1,9 @@
-import Todo from "./components/Todo";
-import { fetchTodos } from "./libs/actions";
-import { TodoFactory } from "./libs/factories/TodoFactory";
+import { fetchCompletedTodos } from "../libs/actions";
+import Todo from "../components/Todo";
+import { TodoFactory } from "../libs/factories/TodoFactory";
 
 export default async function Home() {
-  const tasks = await fetchTodos();
+  const tasks = await fetchCompletedTodos();
   const todos = tasks?.map((item) => new TodoFactory(item, "APIv1"));
 
   todos?.map((item, index) => {

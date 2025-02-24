@@ -95,6 +95,30 @@ export const fetchTodos = async () => {
   }
 };
 
+export const fetchCompletedTodos = async () => {
+  try {
+    const data = await sql<TodoBackend[]>`
+    SELECT * FROM todos WHERE is_completed = TRUE
+    `;
+
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const fetchActiveTodos = async () => {
+  try {
+    const data = await sql<TodoBackend[]>`
+    SELECT * FROM todos WHERE is_completed = FALSE
+    `;
+
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const deleteTodo = async (id: string) => {
   try {
     await sql`

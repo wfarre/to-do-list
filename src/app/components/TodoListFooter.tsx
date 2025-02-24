@@ -1,6 +1,7 @@
 import React from "react";
 import { deleteCompletedTodos } from "../libs/actions";
 import { TodoFactory } from "../libs/factories/TodoFactory";
+import Link from "next/link";
 
 const TodoListFooter = (props: { tasks?: TodoFactory[] }) => {
   return (
@@ -11,13 +12,13 @@ const TodoListFooter = (props: { tasks?: TodoFactory[] }) => {
       <li>
         <ul className="flex gap-4">
           <li>
-            <a>All</a>
+            <Link href={"/"}>All</Link>
           </li>
           <li>
-            <a>Active</a>
+            <Link href={"/active"}>Active</Link>
           </li>
           <li>
-            <a>Completed</a>
+            <Link href={"/completed"}>Completed</Link>
           </li>
         </ul>
       </li>
