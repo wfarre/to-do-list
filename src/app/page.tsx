@@ -3,8 +3,8 @@ import { fetchTodos } from "./libs/actions";
 import { TodoFactory } from "./libs/factories/TodoFactory";
 
 export default async function Home() {
-  const tasks = await fetchTodos();
-  const todos = tasks?.map((item) => new TodoFactory(item, "APIv1"));
+  const data = await fetchTodos();
+  const todos = data?.data.map((item) => new TodoFactory(item, "APIv1"));
 
   todos?.map((item, index) => {
     return (

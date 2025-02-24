@@ -13,13 +13,13 @@ const Todo = (props: Props) => {
   const updateTodoWithId = updateTodoStatus.bind(null, props.id);
 
   return (
-    <div className="text-white flex gap-3 md:gap-6 bg-slate-800 px-5 py-4 text-sm md:text-lg border-b border-b-slate-50">
+    <div className=" flex gap-3 md:gap-6 bg-veryDarkDesaturatedBlue px-5 py-4 text-sm md:text-lg border-b border-b-veryDarkGrayishBlue ">
       <form id={"update-status-form"} action={updateTodoWithId}>
         <label
           className={`relative h-6 w-6 ${
             props.isCompleted
-              ? "bg-gradient-to-r from-cyan-500 to-blue-500 "
-              : "border border-slate-400"
+              ? "bg-gradient-to-r from-blueSky to-purple"
+              : "border border-veryDarkGrayishBlue "
           }  flex justify-center items-center rounded-full  `}
           htmlFor={"done" + props.index}
         >

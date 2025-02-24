@@ -89,7 +89,12 @@ export const fetchTodos = async () => {
     SELECT * FROM todos
     `;
 
-    return data;
+    const count = await sql`
+    SELECT COUNT(title) FROM todos WHERE is_completed = FALSE`;
+
+    console.log(count[0].count);
+
+    return { data: data, count: count[0].count };
   } catch (error) {
     console.log(error);
   }

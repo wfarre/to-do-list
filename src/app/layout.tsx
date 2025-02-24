@@ -4,7 +4,6 @@ import "./globals.css";
 import Image from "next/image";
 import { fetchTodos } from "./libs/actions";
 import AddForm from "./components/AddForm";
-import { TodoFactory } from "./libs/factories/TodoFactory";
 import TodoListFooter from "./components/TodoListFooter";
 
 const josefinSans = Josefin_Sans({
@@ -22,13 +21,14 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const tasks = await fetchTodos();
-  const todos = tasks?.map((item) => new TodoFactory(item, "APIv1"));
+  const data = await fetchTodos();
+
+  console.log(data);
 
   return (
     <html lang="en">
-      <body className={` ${josefinSans.variable} antialiased`}>
-        <div className="relative min-h-[100vh] p-6 z-0">
+      <body className={` ${josefinSans.variable} antialiased font-medium`}>
+        <div className="relative min-h-[100vh] p-6 z-0 bg-veryDarkBlue text-lightGrayishBlue ">
           <Image
             src={"/images/bg-mobile-dark.jpg"}
             width={375}
@@ -36,7 +36,6 @@ export default async function RootLayout({
             alt=""
             className="absolute w-full top-0 left-0 md:hidden z-[-1]"
           />
-
           <Image
             src={"/images/bg-desktop-dark.jpg"}
             width={1440}
@@ -46,15 +45,17 @@ export default async function RootLayout({
           />
           <div className="max-w-[540px] mx-auto">
             <header>
-              <h1 className=" text-2xl text-white mt-6">TO DO</h1>
+              <h1 className=" text-4xl mt-6 font-bold text-white tracking-[1rem]">
+                TODO
+              </h1>
               <AddForm />
             </header>
 
             <main className="mt-4 md:mt-6">
-              <ul className=" shadow-2xl shadow-slate-500">
+              <ul className=" shadow-2xl shadow-veryDarkDesaturatedBlue">
                 <li>{children}</li>
                 <li>
-                  <TodoListFooter tasks={todos} />
+                  <TodoListFooter listLength={data?.count ? data.count : 0} />
                 </li>
               </ul>
             </main>
